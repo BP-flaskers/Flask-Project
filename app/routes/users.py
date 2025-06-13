@@ -15,7 +15,7 @@ def signup():
         try:
             data = request.get_json() # 사용자가 입력한 데이터
             # 데이터 분할 -> DB 저장
-            user = Users( # user 변수에 저장, 클래스를 통해 객체 저장.
+            user = User( # user 변수에 저장, 클래스를 통해 객체 저장.
                 name=data['name'],
                 age=data['age'],
                 gender=data['gender'],
