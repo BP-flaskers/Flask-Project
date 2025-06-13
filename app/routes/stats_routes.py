@@ -3,10 +3,10 @@ from sqlalchemy import func
 from config import db
 from app.models import Answer, Choices, Question
 
-stats_routes_blp = Blueprint('stats_routes', __name__)
+stats_routes_bp = Blueprint('stats_routes', __name__)
 
 # 1. 사용 중인 유저의 각 질문당 선택지 선택 비율
-@stats_routes_blp.route('/stats/answer_rate_by_choice', methods=['GET'])
+@stats_routes_bp.route('/stats/answer_rate_by_choice', methods=['GET'])
 def user_answer_rate():
     try:
         result = db.session.query(
@@ -36,7 +36,7 @@ def user_answer_rate():
 
 
 # 2. 모든 질문에 대해 각 선택지의 선택 횟수 및 비율
-@stats_routes_blp.route('/stats/answer_count_by_question', methods=['GET'])
+@stats_routes_bp.route('/stats/answer_count_by_question', methods=['GET'])
 def question_answer_distribution():
     try:
         result = db.session.query(
