@@ -1,15 +1,16 @@
 # users.py
 from flask import Blueprint, jsonify, request
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.testing.suite.test_reflection import users
 
-user_bp = Blueprint('users', __name__)
+users_bp = Blueprint('users', __name__)
 
-@user_bp.route('/', methods=['GET']) # user 페이지
+@users_bp.route('/', methods=['GET']) # user 페이지
 def get_user_page():
     if request.method == 'GET':
         return jsonify({'msg':'연결 완'})
 
-@user_bp.route('/signup', methods=['POST'])
+@users_bp.route('/signup', methods=['POST'])
 def signup():
     if request.method == "POST":
         try:
