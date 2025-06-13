@@ -39,6 +39,8 @@ def create_questions():
             "question_id": question.id,
             "sqe": question.sqe
         }), 201
+    except Exception as e:
+        return jsonify({"msg": f"internal server error {e}"}), 500
 
 # 질문 ID를 반환하는 API
 @questions_bp.route("/questions/<int:question_id>", methods=["GET"])
