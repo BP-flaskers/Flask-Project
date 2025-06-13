@@ -1,6 +1,6 @@
 from flask import request, Blueprint, jsonify
-from app.models import Question, Image, Choices
-from app import db
+from app.models import Question, Image, Choices, db
+
 
 questions_bp = Blueprint("questions", __name__)
 
