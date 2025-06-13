@@ -1,6 +1,5 @@
 from flask import jsonify, request, Blueprint
-from app.models import Image
-from config import db
+from app.models import Image, db
 
 # 이미지 관련 API를 관리하는 Blueprint 생성
 images_bp = Blueprint("images", __name__)

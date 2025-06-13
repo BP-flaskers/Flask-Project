@@ -1,7 +1,7 @@
 from flask import jsonify, Blueprint
 from sqlalchemy import func
 from config import db
-from app.models import Answer, Choices, Question
+from app.models import Answer, Choice, Question
 
 stats_routes_bp = Blueprint('stats_routes', __name__)
 
@@ -11,13 +11,13 @@ def user_answer_rate():
     try:
         result = db.session.query(
             Question.id.label('question_id'),
-            Choices.id.label('choice_id'),
+            Choice.id.label('choice_id'),
             func.count(Answer.id).label('answer_count'),
             (func.count(Answer.id) * 100 / func.sum(func.count(Answer.id)).over()).label('percentage')
-        ).join(Choices, Choices.id == Answer.choice_id) \
-         .join(Question, Question.id == Choices.question_id) \
-         .group_by(Question.id, Choices.id) \
-         .order_by(Question.id, Choices.id) \
+        ).join(Choice, Choice.id == Answer.choice_id) \
+         .join(Question, Question.id == Choice.question_id) \
+         .group_by(Question.id, Choice.id) \
+         .order_by(Question.id, Choice.id) \
          .all()
 
         data = [
@@ -41,13 +41,13 @@ def question_answer_distribution():
     try:
         result = db.session.query(
             Question.id.label('question_id'),
-            Choices.id.label('choice_id'),
+            Choice.id.label('choice_id'),
             func.count(Answer.id).label('answer_count'),
             (func.count(Answer.id) * 100 / func.sum(func.count(Answer.id)).over(partition_by=Question.id)).label('percentage')
-        ).join(Choices, Choices.id == Answer.choice_id) \
-         .join(Question, Question.id == Choices.question_id) \
-         .group_by(Question.id, Choices.id) \
-         .order_by(Question.id, Choices.id) \
+        ).join(Choice, Choice.id == Answer.choice_id) \
+         .join(Question, Question.id == Choice.question_id) \
+         .group_by(Question.id, Choice.id) \
+         .order_by(Question.id, Choice.id) \
          .all()
 
         data = [

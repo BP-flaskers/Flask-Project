@@ -93,7 +93,7 @@ class Question(CommonModel):
     image = db.relationship("Image", back_populates="questions")
 
 
-class Choices(CommonModel):
+class Choice(CommonModel):
     __tablename__ = "choices"
     content = db.Column(db.String(255), nullable=False)
     is_active = db.Column(db.Boolean, nullable=False, default=True)
