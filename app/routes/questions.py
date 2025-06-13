@@ -1,5 +1,5 @@
 from flask import request, Blueprint, jsonify
-from app.models import Question, Image, Choices, db
+from app.models import Question, Image, Choice, db
 
 
 questions_bp = Blueprint("questions", __name__)
@@ -51,8 +51,8 @@ def get_question(question_sqe):
             return jsonify({"msg": "질문이 존재하지 않습니다."}), 404
         image = Image.query.get(question.image_id)
         choice_list = (
-            Choices.query.filter_by(question_id=question_sqe, is_active=True)
-            .order_by(Choices.sqe)
+            Choice.query.filter_by(question_id=question_sqe, is_active=True)
+            .order_by(Choice.sqe)
             .all()
         )
 
@@ -156,7 +156,7 @@ def delete_question(question_sqe):
 
         question.is_active = False
 
-        choices = Choices.query.filter_by(question_id=question_sqe).all()
+        choices = Choice.query.filter_by(question_id=question_sqe).all()
         for choice in choices:
             choice.is_active = False
 

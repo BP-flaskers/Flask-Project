@@ -1,7 +1,7 @@
 # users.py
 from flask import Blueprint, jsonify, request
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.testing.suite.test_reflection import users
+from app.models import db, User
 
 users_bp = Blueprint('users', __name__)
 
@@ -36,3 +36,5 @@ def signup():
         except Exception as e: 
             db.session.rollback()
             return jsonify({'error': '회원가입 중 예상치 못한 오류가 발생했습니다.', 'details': str(e)}), 500 # 500 서버에러
+
+    # return jsonify({'msg':'Successfully'})
