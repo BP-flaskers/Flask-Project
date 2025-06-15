@@ -1,5 +1,5 @@
 from flask import jsonify, request, Blueprint
-from app.models import Image, db
+from app.models import Image, db, ImageType
 
 # 이미지 관련 API를 관리하는 Blueprint 생성
 images_bp = Blueprint("images", __name__)
@@ -31,6 +31,6 @@ def create_image():
 @images_bp.route("/image/main", methods=["GET"])
 def get_main_image_route():
     # "main" 타입의 이미지 중 첫 번째 데이터를 가져오기
-    image = Image.query.filter_by(type="main").first()
+    image = Image.query.filter_by(type=ImageType.main).first()
 
     return jsonify({"image": image.url if image else None}), 200
