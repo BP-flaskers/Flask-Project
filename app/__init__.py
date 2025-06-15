@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from flask_migrate import Migrate
+from flask_cors import CORS
 
 import app.models
 from app.routes import register_routes
@@ -13,7 +14,7 @@ def create_app():
 
     application.config.from_object("config.Config")
     application.secret_key = "oz_form_secret"
-
+    CORS(application, origins=["https://oz-flask-form.vercel.app"])
     db.init_app(application)
     migrate.init_app(application, db)
 
@@ -23,7 +24,7 @@ def create_app():
         response = jsonify({"message": error.description})
         response.status_code = 400
         return response
-
+    
     # app/route/__init__.py에 블루 브린트를 등록해주세요
     register_routes(application)
 
