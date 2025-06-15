@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from flask_migrate import Migrate
+from flask_cors import CORS
 
 import app.models
 from app.routes import register_routes
@@ -23,7 +24,7 @@ def create_app():
         response = jsonify({"message": error.description})
         response.status_code = 400
         return response
-
+    CORS(application, resources={r"/*": {"origins": "*"}})
     # app/route/__init__.py에 블루 브린트를 등록해주세요
     register_routes(application)
 
