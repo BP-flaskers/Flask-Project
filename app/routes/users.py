@@ -26,7 +26,7 @@ def signup():
             db.session.commit() # DB에 업로드
 
             return jsonify(
-                {'msg' : f'{user.name}님 회원가입이 완료 되었습니다.'}
+                {'message' : f'{user.name}님 회원가입이 완료 되었습니다.'}
             )
         # 에러 처리
         except IntegrityError: 

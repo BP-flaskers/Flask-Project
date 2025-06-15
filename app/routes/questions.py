@@ -14,16 +14,16 @@ def create_questions():
         required_fields = ["title", "sqe", "image_id"]
         for field in required_fields:
             if field not in data:
-                return jsonify({"msg":f"Missing field: {field}"}), 400
+                return jsonify({"message":f"Missing field: {field}"}), 400
 
         # 이미지 유무 확인
         image = Image.query.get(data["image_id"])
         if not image:
-            return jsonify({"msg":"Image not found"}), 404
+            return jsonify({"message":"Image not found"}), 404
 
         # 이미지 타입을 검증
         if image.type.value != "sub":
-            return jsonify({"msg": "Image type must be 'sub'"}), 400
+            return jsonify({"message": "Image type must be 'sub'"}), 400
 
         question = Question(
             title=data["title"],
@@ -35,12 +35,12 @@ def create_questions():
         db.session.add(question)
         db.session.commit()
         return jsonify({
-            "msg":"Question created",
+            "message":"Question created",
             "question_id": question.id,
             "sqe": question.sqe
         }), 201
     except Exception as e:
-        return jsonify({"msg": f"internal server error {e}"}), 500
+        return jsonify({"message": f"internal server error {e}"}), 500
 
 # 질문 ID를 반환하는 API
 @questions_bp.route("/questions/<int:question_id>", methods=["GET"])
@@ -48,7 +48,7 @@ def get_question(question_id):
     try:
         question = Question.query.filter_by(sqe=question_id, is_active=True).first()
         if not question:
-            return jsonify({"msg": "질문이 존재하지 않습니다."}), 404
+            return jsonify({"message": "질문이 존재하지 않습니다."}), 404
         image = Image.query.get(question.image_id)
         choice_list = (
             Choice.query.filter_by(question_id=question_id, is_active=True)
@@ -66,7 +66,7 @@ def get_question(question_id):
         }), 200
 
     except Exception as e:
-        return jsonify({"msg": f"Internal server error: {str(e)}"}), 500
+        return jsonify({"message": f"Internal server error: {str(e)}"}), 500
 
 @questions_bp.route("/questions", methods={"GET"})
 def get_all_questions():
@@ -97,7 +97,7 @@ def get_all_questions():
         }), 200
 
     except Exception as e:
-        return jsonify({"msg": f"Internal server error: {str(e)}"}), 500 # 서버 요청에 오류가 발생했을 시 발생하는 에러 메세지
+        return jsonify({"message": f"Internal server error: {str(e)}"}), 500 # 서버 요청에 오류가 발생했을 시 발생하는 에러 메세지
 
 @questions_bp.route("/questions/count", methods=["GET"])
 def count_question():
@@ -105,14 +105,14 @@ def count_question():
         count = Question.query.filter_by(is_active=True).count()
         return jsonify({"total": count}), 200
     except Exception as e:
-        return jsonify({"msg": f"Internal server error: {str(e)}"}), 500 # 서버 요청에 오류가 발생했을 시 발생하는 에러 메세지
+        return jsonify({"message": f"Internal server error: {str(e)}"}), 500 # 서버 요청에 오류가 발생했을 시 발생하는 에러 메세지
 
 @questions_bp.route("/questions/<int:question_sqe>", methods=["PUT"])
 def update_question(question_sqe):
     try:
         question = Question.query.filter_by(sqe=question_sqe, is_active=True).first()
         if not question:
-            return jsonify({"msg": "질문이 존재하지 않습니다."}), 404
+            return jsonify({"message": "질문이 존재하지 않습니다."}), 404
 
         data = request.get_json()
 
@@ -122,9 +122,9 @@ def update_question(question_sqe):
         if "image_id" in data:
             image = Image.query.get(data["image_id"])
             if not image:
-                return jsonify({"msg": "Image not found"}), 404
+                return jsonify({"message": "Image not found"}), 404
             if image.type.value != "sub":
-                return jsonify({"msg": "Image type must be 'sub'"}), 400
+                return jsonify({"message": "Image type must be 'sub'"}), 400
             question.image_id = data["image_id"]
 
         if "is_active" in data:
@@ -145,14 +145,14 @@ def update_question(question_sqe):
 
     except Exception as e:
         db.session.rollback()
-        return jsonify({"msg": f"Internal server error: {str(e)}"}), 500
+        return jsonify({"message": f"Internal server error: {str(e)}"}), 500
 
 @questions_bp.route("/questions/<int:question_sqe>", methods=["DELETE"])
 def delete_question(question_sqe):
     try:
         question = Question.query.filter_by(sqe=question_sqe, is_active=True).first()
         if not question:
-            return jsonify({"msg": "질문이 존재하지 않습니다."}), 404
+            return jsonify({"message": "질문이 존재하지 않습니다."}), 404
 
         question.is_active = False
 
@@ -163,9 +163,9 @@ def delete_question(question_sqe):
         db.session.commit()
 
         return jsonify({
-            "msg": f"Question {question_sqe} deleted Successfully"
+            "message": f"Question {question_sqe} deleted Successfully"
         }), 200
 
     except Exception as e:
         db.session.rollback()
-        return jsonify({"msg": f"Internal server error: {str(e)}"}), 500
+        return jsonify({"message": f"Internal server error: {str(e)}"}), 500
