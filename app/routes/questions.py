@@ -44,14 +44,14 @@ def create_questions():
 
 # 질문 ID를 반환하는 API
 @questions_bp.route("/questions/<int:question_id>", methods=["GET"])
-def get_question(question_sqe):
+def get_question(question_id):
     try:
-        question = Question.query.filter_by(sqe=question_sqe, is_active=True).first()
+        question = Question.query.filter_by(sqe=question_id, is_active=True).first()
         if not question:
             return jsonify({"msg": "질문이 존재하지 않습니다."}), 404
         image = Image.query.get(question.image_id)
         choice_list = (
-            Choice.query.filter_by(question_id=question_sqe, is_active=True)
+            Choice.query.filter_by(question_id=question_id, is_active=True)
             .order_by(Choice.sqe)
             .all()
         )
