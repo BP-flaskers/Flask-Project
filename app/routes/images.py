@@ -31,6 +31,6 @@ def create_image():
 @images_bp.route("/image/main", methods=["GET"])
 def get_main_image_route():
     # "main" 타입의 이미지 중 첫 번째 데이터를 가져오기
-    image = Image.query.filter_by(type=ImageType.main).first()
+    image = Image.query.filter_by(type=ImageType.main.value).first()
 
     return jsonify({"image": image.url if image else None}), 200
